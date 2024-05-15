@@ -37,7 +37,11 @@ async function run() {
     })
 
     // List all coffees in the database
-    
+    app.get('/coffee', async (req, res) => {
+      const cursor = coffeeCollection.find({});
+      const result = await cursor.toArray();
+      res.send(result);
+    })
 
 
     // Send a ping to confirm a successful connection
