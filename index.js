@@ -25,10 +25,10 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    
+
     const coffeeCollection = client.db('coffeeDB').collection('coffee');
     const userCollection = client.db('coffeeDB').collection('users');
-      
+
     // Add a new coffee in database to the client
     app.post('/coffee', async (req, res) => {
       const newCoffee = req.body;
@@ -98,6 +98,14 @@ async function run() {
       res.send(result);
     })
 
+    // Delete user
+    app.delete('/users/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await userCollection.deleteOne(query);
+      res.send(result);
+    });
+
 
 
     // Send a ping to confirm a successful connection
@@ -113,10 +121,10 @@ run().catch(console.dir);
 
 // Routes
 app.get('/', (req, res) => {
-    res.send("Coffee Making server is rinnning");
+  res.send("Coffee Making server is rinnning");
 });
 
 
 app.listen(port, () => {
-    console.log(`Coffee server is running on port ${port}`);
+  console.log(`Coffee server is running on port ${port}`);
 });
