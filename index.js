@@ -27,6 +27,7 @@ async function run() {
     await client.connect();
     
     const coffeeCollection = client.db('coffeeDB').collection('coffee');
+    const userCollection = client.db('coffeeDB').collection('users');
       
     // Add a new coffee in database to the client
     app.post('/coffee', async (req, res) => {
@@ -79,6 +80,24 @@ async function run() {
       const result = await coffeeCollection.updateOne(query, updateDoc, option);
       res.send(result);
     })
+
+    // User Related APIs
+
+    // Add a new user in database to the client
+    app.post('/users', async (req, res) => {
+      const newUser = req.body;
+      console.log('adding new user:', newUser);
+      const result = await userCollection.insertOne(newUser);
+      res.send(result);
+    })
+
+    // List all users in the database
+    app.get('/users', async (req, res) => {
+      const cursor = userCollection.find({});
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
 
 
     // Send a ping to confirm a successful connection
