@@ -106,6 +106,24 @@ async function run() {
       res.send(result);
     });
 
+    // Update user
+    app.put('/users/:id', async (req, res) => {
+      const id = req.params.id;
+      const updateUser = req.body;
+      const query = { _id: new ObjectId(id) };
+      const option = { upsert: true };
+      const updateDoc = {
+        $set: {
+          name: updateUser.name,
+          email: updateUser.email,
+          createAt: updateUser.createAt,
+          lastSignInTime: updateUser.lastSignInTime,
+        }
+      };
+      const result = await userCollection.updateOne(query, updateDoc, option);
+      res.send(result);
+    })
+
 
 
     // Send a ping to confirm a successful connection
