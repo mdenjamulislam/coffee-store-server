@@ -122,7 +122,19 @@ async function run() {
       };
       const result = await userCollection.updateOne(query, updateDoc, option);
       res.send(result);
-    })
+    });
+
+    app.patch('/users', async (req, res) => {
+      const user = req.body;
+      const filter = { email: user.email };
+      const updateDoc = {
+        $set: {
+          lastSignInTime: user.lastSignInTime,
+        }
+      }
+      const result = await userCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
 
 
 
